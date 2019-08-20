@@ -1,0 +1,10 @@
+syntax="proto2";
+
+
+message Data
+{
+    //Name of the dataset
+    required string dataset_name=1;
+    //Location of TFRecords
+    required string tfrecord_glob_path=2;
+}

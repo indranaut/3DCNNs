@@ -1,0 +1,10 @@
+syntax="proto2";
+
+
+message Network{
+    required string network_name=1;
+    required int32 numframes=2;
+    required int32 input_height=3;
+    required int32 input_width=4;
+    required int32 num_classes=5;
+}
