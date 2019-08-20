@@ -1,4 +1,5 @@
 import tensorflow as tf
+import logging
 from protos import network_pb2
 from nets.i3d import Inception3D
 
@@ -45,7 +46,7 @@ def build_network(network_proto_config, is_training=False):
                         network_dictionary['input_width'])
 
     network.build(input_shape=input_shape)
-    tf.logging.info(network.summary())
+    logging.info(network.summary())
 
     return network
 
