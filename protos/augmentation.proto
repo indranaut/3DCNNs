@@ -22,8 +22,26 @@ message Augmentations{
         // If  this message is not provided, then the input will be directly
         // resized to the input_height and input_width.
         // All resizing is performed using bilinear interpolation.
-        optional int32 resize_height=1[default=256];
-        optional int32 resize_width=2[default=256];
+
+        // Only one of the resize strategies can be adopted.
+        oneof resize_method{
+            ResizeMinimum resize_min=1;
+            ResizeMaximum resize_max=2;
+            ResizeExact resize_exact=3;
+        }
+        // Resizes the minimum dimension of the image keeping aspect ratio
+        message ResizeMinimum{
+            optional int32 target_size=1[default=256];
+        }
+        //Resizes the maximum dimension of the image keeping aspect ratio
+        message ResizeMaximum{
+            optional int32 target_size=1[default=256];
+        }
+        //Resizes the image to a target size without keeping aspect ratio.
+        message ResizeExact{
+            optional int32 resize_height=1[default=256];
+            optional int32 resize_width=2[default=256];
+        }
     }
 
 }
