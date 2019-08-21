@@ -1,0 +1,29 @@
+syntax="proto2";
+
+message Augmentations{
+    optional RandomBrightness random_brightness=1;
+    optional RandomContrast random_contrast=2;
+    optional bool horizontal_flip=3[default=false];
+    optional RandomCrop resize=4;
+    message RandomBrightness{
+        //Follows the arguments to tf.image.random_brightness
+        optional float max_delta=1[default=0.3];
+    }
+    message RandomContrast{
+        //Follows the arguments to tf.image.random_contrast
+        optional float lower=1[default=0];
+        optional float upper=2[default=0.3];
+    }
+    message RandomCrop{
+        //For resizing the input prior to random_crop
+        //Based on the input_height and input_width specified in Network message,
+        // the input will be randomly cropped to that size after resizing the input
+        // to the heights specified below.
+        // If  this message is not provided, then the input will be directly
+        // resized to the input_height and input_width.
+        // All resizing is performed using bilinear interpolation.
+        optional int32 resize_height=1[default=256];
+        optional int32 resize_width=2[default=256];
+    }
+
+}
