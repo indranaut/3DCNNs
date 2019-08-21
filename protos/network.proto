@@ -6,16 +6,17 @@ message Network{
     required int32 input_height=3;
     required int32 input_width=4;
     required int32 num_classes=5;
-    oneof data_format{
-        string CHANNELS_LAST=6;
-        string CHANNELS_FIRST=7;
-    }
+    required DATA_FORMAT data_format=6;
     oneof network_details{
-        I3D i3d=8;
+        I3D i3d=7;
     }
     message I3D{
         optional bool spatial_squeeze=1[default=true];
         optional float dropout_keep_prob=2[default=0.5];
         optional string name=3[default='inception_i3d'];
+    }
+    enum DATA_FORMAT{
+        CHANNELS_FIRST=0;
+        CHANNELS_LAST=1;
     }
 }
