@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+env:
+  global:
+    -ROOT_DIR=$TRAVIS_BUILD_DIR/3DCNNs
+before_install:
+  - pip install -q tensorflow==2.0.0-beta1
+  - pip install protobuf>=3.6.1
+  - cd $ROOT_DIR
+  - sh compile_proto.sh
+# command to run tests
+script:
+  - python -m unittest discover -p "*_test.py"
