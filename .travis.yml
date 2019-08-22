@@ -5,6 +5,7 @@ python:
   - "3.6"
 
 before_install:
+  - sudo apt install protobuf-compiler
   - pip install -q tensorflow==2.0.0-beta1
   - pip install protobuf>=3.6.1
   - sh compile_proto.sh
