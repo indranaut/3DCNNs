@@ -45,7 +45,7 @@ class NetworkBuilderTest(tf.test.TestCase):
         network = build_network(network_proto_config=self._msg,
                                 is_training=False)
 
-        inputs = tf.keras.backend.random_uniform(shape=(1, 3, 64, 224, 224),
+        inputs = tf.keras.backend.random_uniform(shape=(1, 64, 224, 224, 3),
                                                  dtype=tf.float32)
 
         output_shape = network(inputs)
