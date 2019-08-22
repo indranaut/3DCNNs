@@ -1,6 +1,7 @@
 from google.protobuf.json_format import MessageToDict
 from data import preprocessing
 import functools
+import tensorflow as tf
 
 
 def parse_augmentation_config(augmentation_config):
@@ -24,6 +25,10 @@ def build_augmentations(augmentation_config, input_height, input_width):
         args_dict = {**args_dict, **augmentation_dict['random_crop']}
         augmentations.append(
             preprocessing.build_random_crop(args_dict)
+        )
+    else:
+        augmentations.append(
+            lambda x : tf.image.resize(x, [input_height, input_width])
         )
 
     if 'random_brightness' in augmentation_dict:
