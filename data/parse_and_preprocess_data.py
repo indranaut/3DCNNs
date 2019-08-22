@@ -76,7 +76,6 @@ def parse_single_record(record, numclasses, subset):
     return output_data
 
 
-
 def append_frames_by_repeating(video, numframes_video, numframes_out):
     numframes_to_append = numframes_out - numframes_video
     last_frame_index = numframes_video - 1
@@ -89,6 +88,7 @@ def append_frames_by_repeating(video, numframes_video, numframes_out):
                                axis=0)
     output_video = tf.concat([video, appended_frames], axis=0)
     return output_video
+
 
 def select_random_continuous_frames(video, num_frames):
     numframes_video, frame_height, frame_width, _ = tf.shape(video)[0]
@@ -107,15 +107,28 @@ def select_random_continuous_frames(video, num_frames):
     return sliced_video
 
 
+def add_extra_frames(video, num_extra_frames):
+    numframes_video, frame_height, frame_width, _ = tf.shape(video)
+    last_frame_index = numframes_video - 1
+    last_frame = tf.slice(input_=video,
+                          begin=[last_frame_index, 0, 0, 0],
+                          size=[1, frame_height, frame_width, 3])
+
+    appended_frames = tf.stack([last_frame] * num_extra_frames,
+                               axis=0)
+    output_video = tf.concat([video, appended_frames], axis=0)
+    return output_video
+
+
 def preprocess_train_eval(parsed_record, num_frames, augmentation_fn, repeat_if_less=False):
     video = parsed_record['video']
     numframes_video = tf.shape(video)[0]
     if repeat_if_less:
         video = tf.cond(
             tf.less(numframes_video, num_frames),
-            lambda : append_frames_by_repeating(video,
-                                                numframes_video, num_frames),
-            lambda : video
+            lambda: append_frames_by_repeating(video,
+                                               numframes_video, num_frames),
+            lambda: video
         )
 
     numframes_video = tf.shape(video)[0]
@@ -125,11 +138,30 @@ def preprocess_train_eval(parsed_record, num_frames, augmentation_fn, repeat_if_
     return parsed_record
 
 
-
-
-
-
-
-
-
-
+def preprocess_test(parsed_record, num_frames, augmentation_fn):
+    video = parsed_record['video']
+    numframes_video = tf.shape(video)[0]
+    extra_frames_required = tf.math.floormod(numframes_video, num_frames)
+    video = tf.cond(
+         extra_frames_required == 0,
+        lambda: video,
+        lambda: add_extra_frames(video, extra_frames_required)
+    )
+    numframes_video = tf.shape(video)[0]
+    num_segments = tf.cast(numframes_video / num_frames, tf.int32)
+    video = augmentation_fn(video)
+    video = tf.unstack(video, num=num_segments, axis=0)
+    video = tf.concat(video, axis=0)
+    label = parsed_record['label']
+    label = tf.stack([label] * num_segments,
+                     axis=1)
+    label_text = parsed_record['label_text']
+    label_text = tf.stack([label_text] * num_segments,
+                          axis=1)
+    video_file_name = parsed_record['video_file_name']
+    video_file_name = tf.stack([video_file_name] * num_segments,
+                               axis=1)
+    parsed_record['label'] = label
+    parsed_record['label_text'] = label_text
+    parsed_record['video_file_name'] = video_file_name
+    return parsed_record
