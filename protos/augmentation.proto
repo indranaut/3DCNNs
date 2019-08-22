@@ -4,7 +4,7 @@ message Augmentations{
     optional RandomBrightness random_brightness=1;
     optional RandomContrast random_contrast=2;
     optional bool horizontal_flip=3[default=false];
-    optional RandomCrop resize=4;
+    optional RandomCrop random_crop=4;
     message RandomBrightness{
         //Follows the arguments to tf.image.random_brightness
         optional float max_delta=1[default=0.3];
