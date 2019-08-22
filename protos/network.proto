@@ -2,7 +2,7 @@
 
 
 message Network{
-    required int32 numframes=2;
+    required int32 num_frames=2;
     required int32 input_height=3;
     required int32 input_width=4;
     required int32 num_classes=5;
