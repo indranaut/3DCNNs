@@ -7,7 +7,6 @@ python:
 before_install:
   - pip install -q tensorflow==2.0.0-beta1
   - pip install protobuf>=3.6.1
-  - cd 3DCNNs
   - sh compile_proto.sh
 # command to run tests
 script:
