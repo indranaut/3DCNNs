@@ -47,8 +47,5 @@ class AugmentationBuilderTest(tf.test.TestCase):
         )
         self.assertDictEqual(augmentation_dict, expected_augmentation_dict, msg=self._proto_msg)
 
-
-
-
 if __name__ == "__main__":
     tf.app.main()
