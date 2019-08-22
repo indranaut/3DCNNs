@@ -1,0 +1,17 @@
+syntax="proto2";
+
+import "protos/network.proto";
+import "protos/data.proto";
+
+message ExperimentConfig{
+    required string experiment_dir=1;
+    required string experiment_name=2;
+    optional string model_dir_name=3[default='model'];
+    optional string summary_dir_name=4[default='summary'];
+    optional int32 keep_checkpoint_max=5[default=20];
+    optional bool use_xla=6[default=false];
+    optional int32 save_summary_steps=7[default=100];
+    optional int32 log_step_count_steps=8[default=100];
+    optional int32 tf_random_seed=9[default=0];
+    optional int32 save_checkpoints_steps=10[default=1000];
+}
