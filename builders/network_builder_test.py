@@ -11,7 +11,7 @@ import numpy as np
 class NetworkBuilderTest(tf.test.TestCase):
     def setUp(self):
         text_proto = """
-                numframes : 64
+                num_frames : 64
                 input_height : 224
                 input_width : 224
                 num_classes : 400
