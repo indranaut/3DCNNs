@@ -1,3 +1,5 @@
+import os
+os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION']='python'
 import tensorflow as tf
 from google.protobuf import text_format
 from builders.network_builder import *

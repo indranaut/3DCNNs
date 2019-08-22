@@ -1,3 +1,5 @@
+import os
+os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION']='python'
 import logging
 from nets.i3d import Inception3D
 from google.protobuf.json_format import MessageToDict
