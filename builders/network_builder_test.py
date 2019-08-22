@@ -33,7 +33,7 @@ class NetworkBuilderTest(tf.test.TestCase):
                 dropout_keep_prob=0.5,
                 name='inception_i3d'
             ),
-            numframes=64,
+            num_frames=64,
             input_height=224,
             input_width=224,
             num_classes=400,
