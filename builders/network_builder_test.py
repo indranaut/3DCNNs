@@ -37,7 +37,7 @@ class NetworkBuilderTest(tf.test.TestCase):
             input_height=224,
             input_width=224,
             num_classes=400,
-            data_format='channels_first'
+            data_format='channels_last'
         )
         self.assertDictEqual(network_dict, network_dict_expected)
 
