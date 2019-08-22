@@ -77,6 +77,58 @@ def parse_single_record(record, numclasses, subset):
 
 
 
+def append_frames_by_repeating(video, numframes_video, numframes_out):
+    numframes_to_append = numframes_out - numframes_video
+    last_frame_index = numframes_video - 1
+    _, frame_height, frame_width, _ = tf.shape(video)
+    last_frame = tf.slice(input_=video,
+                          begin=[last_frame_index, 0, 0, 0],
+                          size=[1, frame_height, frame_width, 3])
+
+    appended_frames = tf.stack([last_frame] * numframes_to_append,
+                               axis=0)
+    output_video = tf.concat([video, appended_frames], axis=0)
+    return output_video
+
+def select_random_continuous_frames(video, num_frames):
+    numframes_video, frame_height, frame_width, _ = tf.shape(video)[0]
+    starting_frame_index = tf.random.uniform(
+        shape=(),
+        minval=0,
+        maxval=numframes_video,
+        dtype=tf.int32
+    )
+
+    sliced_video = tf.slice(
+        input_=video,
+        begin=[starting_frame_index, 0, 0, 0],
+        size=[num_frames, frame_height, frame_width, 3]
+    )
+    return sliced_video
+
+
+def preprocess_train_eval(parsed_record, num_frames, augmentation_fn, repeat_if_less=False):
+    video = parsed_record['video']
+    numframes_video = tf.shape(video)[0]
+    if repeat_if_less:
+        video = tf.cond(
+            tf.less(numframes_video, num_frames),
+            lambda : append_frames_by_repeating(video,
+                                                numframes_video, num_frames),
+            lambda : video
+        )
+
+    numframes_video = tf.shape(video)[0]
+    video = select_random_continuous_frames(video, num_frames=num_frames)
+    video = augmentation_fn(video)
+    parsed_record['video'] = video
+    return parsed_record
+
+
+
+
+
+
 
 
 
