@@ -11,13 +11,13 @@ import numpy as np
 class NetworkBuilderTest(tf.test.TestCase):
     def setUp(self):
         text_proto = """
-                numframes : 64
+                num_frames : 64
                 input_height : 224
                 input_width : 224
                 num_classes : 400
                 i3d {
                 }
-                data_format : CHANNELS_FIRST
+                data_format : CHANNELS_LAST
                 """
         proto_msg = network_pb2.Network()
         text_format.Merge(text_proto, proto_msg)
@@ -33,11 +33,11 @@ class NetworkBuilderTest(tf.test.TestCase):
                 dropout_keep_prob=0.5,
                 name='inception_i3d'
             ),
-            numframes=64,
+            num_frames=64,
             input_height=224,
             input_width=224,
             num_classes=400,
-            data_format='channels_first'
+            data_format='channels_last'
         )
         self.assertDictEqual(network_dict, network_dict_expected)
 
@@ -45,7 +45,7 @@ class NetworkBuilderTest(tf.test.TestCase):
         network = build_network(network_proto_config=self._msg,
                                 is_training=False)
 
-        inputs = tf.keras.backend.random_uniform(shape=(1, 3, 64, 224, 224),
+        inputs = tf.keras.backend.random_uniform(shape=(1, 64, 224, 224, 3),
                                                  dtype=tf.float32)
 
         output_shape = network(inputs)

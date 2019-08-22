@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+
+before_install:
+  - curl -OL https://github.com/google/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip
+  - unzip protoc-3.6.1-linux-x86_64.zip -d protoc3
+  - sudo mv protoc3/bin/* /usr/local/bin/
+  - sudo mv protoc3/include/* /usr/local/include/
+  - sudo apt-get install protobuf-compiler
+  - pip install -q tensorflow==2.0.0-beta1
+  - pip install protobuf>=3.6.1
+  - sh compile_proto.sh
+script:
+  - python -m unittest discover -p "*_test.py"
