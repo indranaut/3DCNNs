@@ -17,7 +17,7 @@ class NetworkBuilderTest(tf.test.TestCase):
                 num_classes : 400
                 i3d {
                 }
-                data_format : CHANNELS_FIRST
+                data_format : CHANNELS_LAST
                 """
         proto_msg = network_pb2.Network()
         text_format.Merge(text_proto, proto_msg)
