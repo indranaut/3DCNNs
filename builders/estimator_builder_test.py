@@ -16,7 +16,7 @@ class EstimatorBuilderTest(tf.test.TestCase):
 
         estimator_config = estimator_builder.build_estimator_config(proto_msg)
         expected_config = tf.estimator.RunConfig(
-            model_dir='.',
+            model_dir='./abc/model',
             tf_random_seed=0,
             save_summary_steps=100,
             save_checkpoints_steps=1000,
